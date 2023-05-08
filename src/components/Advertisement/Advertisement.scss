@@ -1,5 +1,3 @@
-// @import '../../common.scss';
-
 @mixin text-overflow($width) {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -151,11 +149,11 @@
     }
 
     .ad-content {
-      
       border-bottom-left-radius: 10px;
       border-bottom-right-radius: 10px;
       overflow: hidden;
       background-size: cover;
+      background-position: center;
 
       &:hover {
         .ad-description {
@@ -241,7 +239,7 @@
     width: 100%;
 
     .bid-section {
-      width: fit-content;
+      width: 100%;
       padding: 0;
       border: none;
 
@@ -273,7 +271,7 @@
     }
 
     .sponsor-info {
-      width: fit-content;
+      width: 100%;
       padding: 0;
       border: none;
       background: none;
@@ -290,7 +288,13 @@
       }
 
       .ad-content {
-        padding: 18px;
+        .ad-description {
+          padding: 45px;
+
+          .footer {
+            padding: 0;
+          }
+        }
       }
 
       .reward-amount {
@@ -298,8 +302,17 @@
       }
 
       .ad-button {
-        font-size: 15px;
+        font-size: 14px;
         margin-top: 0;
+        min-width: 50px;
+
+        &:first-child {
+          width: 30%;
+        }
+    
+        &:last-child {
+          width: 70%;
+        }
       }
     }
 
