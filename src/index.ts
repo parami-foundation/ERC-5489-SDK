@@ -1,11 +1,11 @@
 // @ts-ignore
 import reactToWebComponent from 'react-to-webcomponent';
-import { Button } from './components';
 import React from 'react';
 import * as ReactDOM from "react-dom/client"
+import HnftBadge from './components/HnftBadge/HnftBadge';
 
-const WebGreeting = reactToWebComponent(Button, React, ReactDOM)
+const WebHnftBadge = reactToWebComponent(HnftBadge, React, ReactDOM);
 
-if (!customElements.get('web-greeting')) {
-  customElements.define('web-greeting', WebGreeting);
+if (!customElements.get('hnft-badge')) {
+  customElements.define('hnft-badge', WebHnftBadge);
 }

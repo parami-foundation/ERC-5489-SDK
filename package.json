@@ -1,7 +1,7 @@
 {
   "name": "@parami/erc5489",
-  "version": "0.0.8",
-  "description": "A simple SDK for enabling hyperlink for your NFT",
+  "version": "0.0.1",
+  "description": "A simple SDK for enabling hyperlink of your NFT",
   "scripts": {
     "rollup": "rollup -c",
     "test": "jest",
@@ -17,6 +17,7 @@
     "@babel/preset-typescript": "^7.16.0",
     "@mdx-js/react": "^2.1.2",
     "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-image": "^3.0.2",
     "@rollup/plugin-node-resolve": "^13.0.6",
     "@rollup/plugin-typescript": "^8.3.0",
     "@storybook/addon-actions": "^6.5.9",
@@ -50,6 +51,7 @@
     "dist"
   ],
   "dependencies": {
+    "antd": "^5.4.6",
     "react-to-webcomponent": "^1.7.6"
   }
 }
