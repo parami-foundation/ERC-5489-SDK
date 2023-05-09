@@ -3,6 +3,7 @@ import commonjs from "@rollup/plugin-commonjs";
 import typescript from "@rollup/plugin-typescript";
 import postcss from "rollup-plugin-postcss";
 import dts from "rollup-plugin-dts";
+import image from '@rollup/plugin-image';
 
 const packageJson = require("./package.json");
 
@@ -21,12 +22,13 @@ export default [
       commonjs(),
       typescript({ tsconfig: "./tsconfig.json" }),
       postcss(),
+      image(),
     ],
   },
-  {
-    input: "dist/esm/types/index.d.ts",
-    output: [{ file: "dist/index.d.ts", format: "esm" }],
-    plugins: [dts()],
-    external: [/\.(css|less|scss)$/],
-  },
+  // {
+  //   input: "dist/esm/types/index.d.ts",
+  //   output: [{ file: "dist/index.d.ts", format: "esm" }],
+  //   plugins: [dts()],
+  //   external: [/\.(css|less|scss)$/],
+  // },
 ];

@@ -1,0 +1,292 @@
+@mixin text-overflow($width) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  white-space: nowrap;
+  max-width: $width;
+}
+
+@mixin flex($justify: flex-start, $align: center) {
+  display: flex;
+  justify-content: $justify;
+  align-items: $align;
+  flex-flow: row nowrap;
+}
+
+.advertisementContainer {
+  .bidSection {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    width: 287px;
+    background: #10121A;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+
+    .userInfo {
+      display: flex;
+      align-items: center;
+    }
+
+    .userName {
+      @include text-overflow(200px);
+    }
+
+    .daoInfo {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      margin-left: 12px;
+    }
+
+    .daoInfoText {
+      color: #FFFFFF;
+      font-size: 24px;
+    }
+
+    .help {
+      font-size: 16px;
+      color: rgba(255, 255, 255, 0.5);
+      padding: 0 12px;
+      margin-top: 14px;
+    }
+
+    .change.flat {
+      background: #4AA372;
+      border-radius: 38px;
+      height: 24px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      padding: 0 8px;
+    }
+  }
+
+  .sponsorInfo {
+    padding: 28px 28px 20px 28px;
+    background: #161820;
+    border: 1px solid rgba(255, 255, 255, 0.13);
+    border-radius: 20px;
+    width: 564px;
+
+    .sponsorHeader {
+      display: flex;
+      align-items: center;
+    }
+
+    .sponsorDesc {
+      display: flex;
+      flex-direction: column;
+      font-size: 24px;
+      margin-left: 12px;
+
+      >span {
+        color: rgba(255, 255, 255, 0.5)
+      }
+    }
+
+    .adSection {
+      background: #10121A;
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      border-radius: 10px;
+      margin-top: 24px;
+      font-size: 24px;
+      color: #fff;
+      position: relative;
+
+      .adSectionArrow {
+        width: 20px;
+        height: 20px;
+        position: absolute;
+        transform: rotate(45deg);
+        left: 24px;
+        top: -11px;
+        z-index: 1;
+        background: #10121A;
+        border-top-left-radius: 5px;
+        border-top: 1px solid rgba(255, 255, 255, 0.13);
+        border-left: 1px solid rgba(255, 255, 255, 0.13);
+      }
+
+      .actionButton {
+        padding: 12px;
+      }
+
+      .adDescription {
+        padding: 70px;
+        visibility: hidden;
+      }
+    }
+
+    .adHeader {
+      font-size: 24px;
+      color: #fff;
+      padding: 24px 24px 8px 24px;
+    }
+
+    .adContent {
+      border-bottom-left-radius: 10px;
+      border-bottom-right-radius: 10px;
+      overflow: hidden;
+      background-size: cover;
+      background-position: center;
+
+      &:hover {
+        .adDescription {
+          visibility: visible;
+          background-color: #000000b9;
+        }
+      }
+    }
+
+    .rewardAmount {
+      display: flex;
+      align-items: center;
+      margin-top: 22px;
+
+      .rewardInfo {
+        display: flex;
+        flex-direction: column;
+        margin-left: 12px;
+      }
+    }
+  }
+
+  .avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+  }
+
+  .footer {
+    @include flex(center, center);
+    text-align: center;
+    margin-top: 12px;
+    padding: 0 12px;
+  }
+
+  .actionButton {
+    min-width: 100px;
+    cursor: pointer;
+    padding: 12px 40px;
+    width: fit-content;
+    border-radius: 30px;
+    background: #fff;
+    font-size: 20px;
+    color: #10121A;
+  }
+
+  .adButton {
+    background: rgba(255, 255, 255, 0.3);
+    margin-top: 22px;
+    color: #fff;
+
+    &:first-child {
+      width: 40%;
+    }
+
+    &:last-child {
+      width: 60%;
+    }
+  }
+
+  .actionButton.left {
+    border-radius: 30px 0 0 30px;
+    margin-right: 6px;
+  }
+
+  .actionButton.right {
+    border-radius: 0 30px 30px 0;
+  }
+
+  .actionButton.left.right {
+    border-radius: 30px;
+  }
+
+  .actionButton:hover {
+    background: rgba(255, 255, 255, 0.5);
+  }
+}
+
+@media only screen and (max-width: 991px) {
+  .advertisementContainer {
+    width: 100%;
+
+    .bidSection {
+      width: 100%;
+      padding: 0;
+      border: none;
+
+      .daoInfoText {
+        font-size: 22px;
+      }
+
+      .help {
+        font-size: 14px;
+        margin-top: 26px;
+        padding: 0;
+      }
+
+      .footer {
+        padding: 0;
+      }
+    }
+
+    .sponsorInfo {
+      width: 100%;
+      padding: 0;
+      border: none;
+      background: none;
+      border-radius: 0;
+
+      .adHeader {
+        padding: 15px 15px 4px 15px;
+      }
+
+      .adSection,
+      .adDeader,
+      .sponsorDesc, .adHeader {
+        font-size: 15px;
+      }
+
+      .adContent {
+        .adDescription {
+          padding: 45px;
+
+          .footer {
+            padding: 0;
+          }
+        }
+      }
+
+      .rewardAmount {
+        margin-top: 14px;
+      }
+
+      .adButton {
+        font-size: 14px;
+        margin-top: 0;
+        min-width: 50px;
+
+        &:first-child {
+          width: 30%;
+        }
+
+        &:last-child {
+          width: 70%;
+        }
+      }
+    }
+
+    .avatar {
+      width: 56px;
+      height: 56px;
+    }
+
+    .actionButton {
+      font-size: 18px;
+      padding: 10px 12px;
+      width: 100%;
+    }
+  }
+}
