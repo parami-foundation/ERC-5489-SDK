@@ -1,5 +1,5 @@
 import React from 'react';
-import './Advertisement.scss';
+import styles from './Advertisement.module.scss';
 import UserAvatar from '../UserAvatar/UserAvatar';
 
 interface AdvertisementProps {
@@ -8,39 +8,39 @@ interface AdvertisementProps {
 
 const Advertisement: React.FC<AdvertisementProps> = ({ ad }) => {
   return (
-    <div className='advertisement-container'>
+    <div className={styles.advertisementContainer}>
       {!ad.isEmpty && (
-        <div className='sponsor-info'>
-          <div className='sponsor-header'>
-            <UserAvatar src={ad.avatar} className='avatar' />
-            <div className='sponsor-desc'>
+        <div className={styles.sponsorInfo}>
+          <div className={styles.sponsorHeader}>
+            <UserAvatar src={ad.avatar} className={styles.avatar} />
+            <div className={styles.sponsorDesc}>
               <span>is sponsoring this hNFT.</span>
               <a className='bidLink' href={ad.bidPageUrl} target='_blank'>
                 Bid on this ad space
               </a>
             </div>
           </div>
-          <div className='ad-section'>
-            <div className='ad-section-arrow'></div>
-            <div className='ad-header'>{ad.title}</div>
+          <div className={styles.adSection}>
+            <div className={styles.adSectionArrow}></div>
+            <div className={styles.adHeader}>{ad.title}</div>
             <div
-              className='ad-content'
+              className={styles.adContent}
               style={{
                 backgroundImage: `url(${ad.posterUrl})`,
               }}
             >
-              <div className='ad-description'>
-                <div className='info-text'>You will be rewarded</div>
-                <div className='reward-amount'>
-                  <UserAvatar src={ad.ad3Icon} className='avatar' />
-                  <div className='reward-info'>
-                    <span className='reward-number'>{ad.rewardAmount}</span>
-                    <span className='reward-token'>{ad.rewardTokenUnit}</span>
+              <div className={styles.adDescription}>
+                <div className={styles.infoText}>You will be rewarded</div>
+                <div className={styles.rewardAmount}>
+                  <UserAvatar src={ad.ad3Icon} className={styles.avatar} />
+                  <div className={styles.rewardInfo}>
+                    <span>{ad.rewardAmount}</span>
+                    <span>{ad.rewardTokenUnit}</span>
                   </div>
                 </div>
-                <div className='footer'>
+                <div className={styles.footer}>
                   <div
-                    className='action-button left ad-button'
+                    className={`${styles.actionButton} ${styles.left} ${styles.adButton}`}
                     onClick={() => {
                       console.log('claim only')
                     }}
@@ -48,7 +48,7 @@ const Advertisement: React.FC<AdvertisementProps> = ({ ad }) => {
                     Claim
                   </div>
                   <div
-                    className='action-button right ad-button'
+                    className={`${styles.actionButton} ${styles.right} ${styles.adButton}`}
                     onClick={() => {
                       console.log('claim and learn more')
                       window.open(ad.link, '_blank');
@@ -64,24 +64,24 @@ const Advertisement: React.FC<AdvertisementProps> = ({ ad }) => {
       )}
 
       {!!ad.isEmpty && (
-        <div className='bid-section'>
-          <div className='user-info'>
-            <UserAvatar src={ad.avatar} className='avatar' />
-            <div className='dao-info'>
-              <div className='dao-info-text'>
-                <div className='user-name'>
+        <div className={styles.bidSection}>
+          <div className={styles.userInfo}>
+            <UserAvatar src={ad.avatar} className={styles.avatar} />
+            <div className={styles.daoInfo}>
+              <div className={styles.daoInfoText}>
+                <div className={styles.userName}>
                   {ad.username}
                 </div>
               </div>
             </div>
           </div>
-          <div className='content'>
-            <div className='help'>
+          <div>
+            <div className={styles.help}>
               {ad.username} hNFT is available to be hyperlinked...
             </div>
-            <div className='footer'>
+            <div className={styles.footer}>
               <div
-                className='action-button'
+                className={styles.actionButton}
                 onClick={() => {
                   window.open(ad.bidPageUrl, '_blank');
                 }}

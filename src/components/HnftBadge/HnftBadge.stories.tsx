@@ -29,5 +29,5 @@ Empty.args = {};
 
 export const Bid = Template.bind({});
 Bid.args = {
-  imageUrl: 'url'
+  imageurl: 'url'
 };

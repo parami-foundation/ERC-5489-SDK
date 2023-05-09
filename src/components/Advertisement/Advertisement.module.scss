@@ -13,18 +13,8 @@
   flex-flow: row nowrap;
 }
 
-// @font-face {
-//   font-family: 'Gilroy-Bold';
-//   src: url('./fonts/Gilroy-Bold.ttf') format('truetype');
-// }
-
-// @font-face {
-//   font-family: 'Gilroy-Regular';
-//   src: url('./fonts/Gilroy-Regular.ttf') format('truetype');
-// }
-
-.advertisement-container {
-  .bid-section {
+.advertisementContainer {
+  .bidSection {
     display: flex;
     flex-direction: column;
     padding: 20px;
@@ -33,39 +23,25 @@
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 20px;
 
-    .user-info {
+    .userInfo {
       display: flex;
       align-items: center;
     }
 
-    .user-name {
+    .userName {
       @include text-overflow(200px);
     }
 
-    .dao-info {
+    .daoInfo {
       display: flex;
       flex-direction: column;
       width: 100%;
       margin-left: 12px;
     }
 
-    .dao-info-text {
+    .daoInfoText {
       color: #FFFFFF;
       font-size: 24px;
-    }
-
-    .token-price {
-      font-size: 20px;
-
-      .number {
-        color: rgba(255, 255, 255, 0.5)
-      }
-    }
-
-    .token-price,
-    .dao-info-text {
-      display: flex;
-      justify-content: space-between;
     }
 
     .help {
@@ -86,19 +62,19 @@
     }
   }
 
-  .sponsor-info {
+  .sponsorInfo {
     padding: 28px 28px 20px 28px;
     background: #161820;
     border: 1px solid rgba(255, 255, 255, 0.13);
     border-radius: 20px;
     width: 564px;
 
-    .sponsor-header {
+    .sponsorHeader {
       display: flex;
       align-items: center;
     }
 
-    .sponsor-desc {
+    .sponsorDesc {
       display: flex;
       flex-direction: column;
       font-size: 24px;
@@ -109,7 +85,7 @@
       }
     }
 
-    .ad-section {
+    .adSection {
       background: #10121A;
       border: 1px solid rgba(255, 255, 255, 0.13);
       border-radius: 10px;
@@ -118,7 +94,7 @@
       color: #fff;
       position: relative;
 
-      &-arrow {
+      .adSectionArrow {
         width: 20px;
         height: 20px;
         position: absolute;
@@ -132,23 +108,23 @@
         border-left: 1px solid rgba(255, 255, 255, 0.13);
       }
 
-      .action-button {
+      .actionButton {
         padding: 12px;
       }
 
-      .ad-description {
+      .adDescription {
         padding: 70px;
         visibility: hidden;
       }
     }
 
-    .ad-header {
+    .adHeader {
       font-size: 24px;
       color: #fff;
       padding: 24px 24px 8px 24px;
     }
 
-    .ad-content {
+    .adContent {
       border-bottom-left-radius: 10px;
       border-bottom-right-radius: 10px;
       overflow: hidden;
@@ -156,21 +132,19 @@
       background-position: center;
 
       &:hover {
-        .ad-description {
+        .adDescription {
           visibility: visible;
           background-color: #000000b9;
         }
       }
     }
 
-    .reward {
-      &-amount {
-        display: flex;
-        align-items: center;
-        margin-top: 22px;
-      }
+    .rewardAmount {
+      display: flex;
+      align-items: center;
+      margin-top: 22px;
 
-      &-info {
+      .rewardInfo {
         display: flex;
         flex-direction: column;
         margin-left: 12px;
@@ -191,7 +165,7 @@
     padding: 0 12px;
   }
 
-  .action-button {
+  .actionButton {
     min-width: 100px;
     cursor: pointer;
     padding: 12px 40px;
@@ -202,7 +176,7 @@
     color: #10121A;
   }
 
-  .ad-button {
+  .adButton {
     background: rgba(255, 255, 255, 0.3);
     margin-top: 22px;
     color: #fff;
@@ -216,47 +190,35 @@
     }
   }
 
-  .action-button.left {
+  .actionButton.left {
     border-radius: 30px 0 0 30px;
     margin-right: 6px;
   }
 
-  .action-button.right {
+  .actionButton.right {
     border-radius: 0 30px 30px 0;
   }
 
-  .action-button.left.right {
+  .actionButton.left.right {
     border-radius: 30px;
   }
 
-  .action-button:hover {
+  .actionButton:hover {
     background: rgba(255, 255, 255, 0.5);
   }
 }
 
 @media only screen and (max-width: 991px) {
-  .advertisement-container {
+  .advertisementContainer {
     width: 100%;
 
-    .bid-section {
+    .bidSection {
       width: 100%;
       padding: 0;
       border: none;
 
-      // .user-name {
-      //   @include text-overflow(140px);
-      // }
-
-      .dao-info-text {
+      .daoInfoText {
         font-size: 22px;
-      }
-
-      .token-price {
-        font-size: 18px;
-      }
-
-      .change.flat {
-        font-size: 12px;
       }
 
       .help {
@@ -270,25 +232,25 @@
       }
     }
 
-    .sponsor-info {
+    .sponsorInfo {
       width: 100%;
       padding: 0;
       border: none;
       background: none;
       border-radius: 0;
 
-      .ad-header {
+      .adHeader {
         padding: 15px 15px 4px 15px;
       }
 
-      .ad-section,
-      .ad-header,
-      .sponsor-desc {
+      .adSection,
+      .adDeader,
+      .sponsorDesc, .adHeader {
         font-size: 15px;
       }
 
-      .ad-content {
-        .ad-description {
+      .adContent {
+        .adDescription {
           padding: 45px;
 
           .footer {
@@ -297,11 +259,11 @@
         }
       }
 
-      .reward-amount {
+      .rewardAmount {
         margin-top: 14px;
       }
 
-      .ad-button {
+      .adButton {
         font-size: 14px;
         margin-top: 0;
         min-width: 50px;
@@ -309,7 +271,7 @@
         &:first-child {
           width: 30%;
         }
-    
+
         &:last-child {
           width: 70%;
         }
@@ -321,7 +283,7 @@
       height: 56px;
     }
 
-    .action-button {
+    .actionButton {
       font-size: 18px;
       padding: 10px 12px;
       width: 100%;

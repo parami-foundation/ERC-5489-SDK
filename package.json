@@ -1,6 +1,6 @@
 {
   "name": "hyperlink-nft-badge",
-  "version": "0.0.2",
+  "version": "0.0.5",
   "description": "A simple SDK for enabling hyperlink of your NFT",
   "scripts": {
     "rollup": "rollup -c",
@@ -52,6 +52,7 @@
   ],
   "dependencies": {
     "antd": "^5.4.6",
+    "autoprefixer": "^10.4.14",
     "react-device-detect": "^2.2.3",
     "react-to-webcomponent": "^1.7.6"
   }

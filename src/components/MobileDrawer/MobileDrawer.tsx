@@ -1,6 +1,6 @@
 import { Drawer } from 'antd';
 import React from 'react';
-import './MobileDrawer.scss';
+import styles from './MobileDrawer.module.scss';
 
 export interface MobileDrawerProps {
     closable?: boolean,
@@ -12,7 +12,7 @@ export interface MobileDrawerProps {
 function MobileDrawer({ children, closable = true, onClose, open = true }: MobileDrawerProps) {
     return <>
         <Drawer
-            className='mobile-drawer'
+            className={styles.mobileDrawer}
             title={null}
             placement={'bottom'}
             closable={false}
@@ -22,8 +22,8 @@ function MobileDrawer({ children, closable = true, onClose, open = true }: Mobil
             onClose={() => { onClose && onClose() }}
         >
             {closable && <>
-                <div className='close-header'>
-                    <div className='close-icon' onClick={() => {
+                <div className={styles.closeHeader}>
+                    <div className={styles.closeIcon} onClick={() => {
                         onClose && onClose()
                     }}>
                         <i className='fa-solid fa-xmark'></i>

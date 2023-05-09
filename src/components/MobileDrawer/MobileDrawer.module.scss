@@ -1,0 +1,18 @@
+.mobileDrawer {
+  color: #ffffff;
+  background: #10121A !important;
+  border-radius: 20px 20px 0 0;
+
+  .closeHeader {
+    position: absolute;
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    left: 0;
+    z-index: 1;
+
+    .closeIcon {
+      margin-right: 27px;
+    }
+  }
+}
