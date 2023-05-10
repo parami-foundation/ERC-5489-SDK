@@ -83,6 +83,15 @@
       >span {
         color: rgba(255, 255, 255, 0.5)
       }
+
+      .bidLink {
+        cursor: pointer;
+        color: #1DA1F2;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
     }
 
     .adSection {
