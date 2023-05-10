@@ -1,6 +1,6 @@
 {
   "name": "hyperlink-nft-badge",
-  "version": "0.0.5",
+  "version": "0.0.12",
   "description": "A simple SDK for enabling hyperlink of your NFT",
   "scripts": {
     "rollup": "rollup -c",
@@ -46,7 +46,9 @@
     "style-loader": "^3.3.1",
     "typescript": "^4.7.4"
   },
-  "main": "dist/index.js",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],

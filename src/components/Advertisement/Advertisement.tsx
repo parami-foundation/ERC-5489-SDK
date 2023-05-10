@@ -15,7 +15,7 @@ const Advertisement: React.FC<AdvertisementProps> = ({ ad }) => {
             <UserAvatar src={ad.avatar} className={styles.avatar} />
             <div className={styles.sponsorDesc}>
               <span>is sponsoring this hNFT.</span>
-              <a className='bidLink' href={ad.bidPageUrl} target='_blank'>
+              <a className={styles.bidLink} href={ad.bidPageUrl} target='_blank'>
                 Bid on this ad space
               </a>
             </div>
