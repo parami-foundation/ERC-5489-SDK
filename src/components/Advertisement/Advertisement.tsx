@@ -1,20 +1,23 @@
 import React from 'react';
 import styles from './Advertisement.module.scss';
 import UserAvatar from '../UserAvatar/UserAvatar';
+import { AdData } from '../../services/hnft.service';
 
 interface AdvertisementProps {
-  ad: any;
+  ad: AdData;
+  hnftImageUrl: string;
 }
 
-const Advertisement: React.FC<AdvertisementProps> = ({ ad }) => {
+const Advertisement: React.FC<AdvertisementProps> = ({ ad, hnftImageUrl }) => {
   return (
     <div className={styles.advertisementContainer}>
-      {!ad.isEmpty && (
+      {ad.adMetaData && (
         <div className={styles.sponsorInfo}>
           <div className={styles.sponsorHeader}>
-            <UserAvatar src={ad.avatar} className={styles.avatar} />
+            <UserAvatar src={ad.adMetaData.icon} className={styles.avatar} />
             <div className={styles.sponsorDesc}>
               <span>is sponsoring this hNFT.</span>
+              {/* todo: open bid url with params */}
               <a className={styles.bidLink} href={ad.bidPageUrl} target='_blank'>
                 Bid on this ad space
               </a>
@@ -22,26 +25,27 @@ const Advertisement: React.FC<AdvertisementProps> = ({ ad }) => {
           </div>
           <div className={styles.adSection}>
             <div className={styles.adSectionArrow}></div>
-            <div className={styles.adHeader}>{ad.title}</div>
+            <div className={styles.adHeader}>{ad.adMetaData.title}</div>
             <div
               className={styles.adContent}
               style={{
-                backgroundImage: `url(${ad.posterUrl})`,
+                backgroundImage: `url(${ad.adMetaData.poster})`,
               }}
             >
               <div className={styles.adDescription}>
                 <div className={styles.infoText}>You will be rewarded</div>
                 <div className={styles.rewardAmount}>
-                  <UserAvatar src={ad.ad3Icon} className={styles.avatar} />
+                  <UserAvatar src={ad.adMetaData.rewardTokenIcon} className={styles.avatar} />
                   <div className={styles.rewardInfo}>
-                    <span>{ad.rewardAmount}</span>
-                    <span>{ad.rewardTokenUnit}</span>
+                    <span>{ad.adMetaData.rewardAmount}</span>
+                    <span>{ad.adMetaData.rewardTokenUnit}</span>
                   </div>
                 </div>
                 <div className={styles.footer}>
                   <div
                     className={`${styles.actionButton} ${styles.left} ${styles.adButton}`}
                     onClick={() => {
+                      // todo: claim
                       console.log('claim only')
                     }}
                   >
@@ -50,8 +54,9 @@ const Advertisement: React.FC<AdvertisementProps> = ({ ad }) => {
                   <div
                     className={`${styles.actionButton} ${styles.right} ${styles.adButton}`}
                     onClick={() => {
+                      // todo: claim
                       console.log('claim and learn more')
-                      window.open(ad.link, '_blank');
+                      window.open(ad.adMetaData!.url, '_blank');
                     }}
                   >
                     Claim & Learn more
@@ -63,21 +68,22 @@ const Advertisement: React.FC<AdvertisementProps> = ({ ad }) => {
         </div>
       )}
 
-      {!!ad.isEmpty && (
+      {!ad.adMetaData && (
         <div className={styles.bidSection}>
           <div className={styles.userInfo}>
-            <UserAvatar src={ad.avatar} className={styles.avatar} />
+            <UserAvatar src={hnftImageUrl} className={styles.avatar} />
             <div className={styles.daoInfo}>
               <div className={styles.daoInfoText}>
                 <div className={styles.userName}>
-                  {ad.username}
+                  {/* todo: nft owner name */}
+                  Hyperlink NFT # {ad.hnftTokenId}
                 </div>
               </div>
             </div>
           </div>
           <div>
             <div className={styles.help}>
-              {ad.username} hNFT is available to be hyperlinked...
+              hNFT is available to be hyperlinked...
             </div>
             <div className={styles.footer}>
               <div

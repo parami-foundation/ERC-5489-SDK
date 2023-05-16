@@ -16,18 +16,56 @@ const MOCK_AD_DATA_EMPTY = {
   username: 'kai kang'
 }
 
-export const fetchAdDataByImageUrl = async (imageUrl: string) => {
-  try {
-    console.log('fetching ad data by image url', imageUrl);
+export interface AdMetaData {
+  icon: string;
+  poster: string;
+  title: string;
+  tag: string;
+  url: string;
+  rewardTokenIcon: string;
+  rewardTokenUnit: string;
+  rewardAmount: string;
+}
 
-    const config = await fetchConfig();
-    return imageUrl
-      ? { ...MOCK_AD_DATA, ...config }
-      : { ...MOCK_AD_DATA_EMPTY, ...config };
-  } catch (error) {
-    // return default empty ad data
-    return MOCK_AD_DATA_EMPTY;
+export interface AdData {
+  bidPageUrl: string;
+  hnftContractAddress: string;
+  hnftTokenId: number;
+  adMetaData?: AdMetaData;
+}
+
+export const fetchAdDataByImageUrl = async (hnft: {
+  hnftImageUrl?: string;
+  hnftContractAddress?: string;
+  hnftTokenId?: number;
+}) => {
+  const data = JSON.stringify(hnft);
+  const resp = await fetch(`https://staging.parami.io/airdrop/sdk/api/ad/current`, {
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: data
+  });
+
+  if (!resp.ok) {
+    return null; // todo: handle error
   }
+
+  const adData = await resp.json();
+  return adData as AdData;
+
+  // try {
+  //   console.log('fetching ad data by image url', imageUrl);
+
+  //   const config = await fetchConfig();
+  //   return imageUrl
+  //     ? { ...MOCK_AD_DATA, ...config }
+  //     : { ...MOCK_AD_DATA_EMPTY, ...config };
+  // } catch (error) {
+  //   // return default empty ad data
+  //   return MOCK_AD_DATA_EMPTY;
+  // }
 }
 
 export const fetchConfig = async () => {
