@@ -6,7 +6,7 @@ import HnftBadge from './components/HnftBadge/HnftBadge';
 
 const WebHnftBadge = reactToWebComponent(HnftBadge, React, ReactDOM);
 
-if (!customElements.get('hnft-badge')) {
+if (customElements && !customElements.get('hnft-badge')) {
   customElements.define('hnft-badge', WebHnftBadge);
 }
 
