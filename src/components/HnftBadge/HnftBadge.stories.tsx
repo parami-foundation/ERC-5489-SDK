@@ -24,10 +24,23 @@ const Template: ComponentStory<typeof HnftBadge> = (args) => <>
   </div>
 </>;
 
-export const Empty = Template.bind({});
-Empty.args = {};
+export const NotHNFT = Template.bind({});
+NotHNFT.args = {
+  hnftContractAddress: '0x94F25955e84682BbE5301537f29442Ce1D5b7584',
+  hnftTokenId: 99999,
+  hnftImageUrl: nft
+};
 
-export const Bid = Template.bind({});
-Bid.args = {
-  imageurl: 'url'
+export const NoAd = Template.bind({});
+NoAd.args = {
+  hnftContractAddress: '0x94F25955e84682BbE5301537f29442Ce1D5b7584',
+  hnftTokenId: 1,
+  hnftImageUrl: nft
+};
+
+export const HasAd = Template.bind({});
+HasAd.args = {
+  hnftContractAddress: '0x94F25955e84682BbE5301537f29442Ce1D5b7584',
+  hnftTokenId: 140,
+  hnftImageUrl: nft
 };

@@ -1,38 +1,42 @@
-const MOCK_AD_DATA = {
-  isEmpty: false,
-  avatar: 'https://pbs.twimg.com/profile_images/1611305582367215616/4W9XpGpU.jpg',
-  rewardAmount: '300.00',
-  rewardTokenUnit: '$AD3',
-  username: 'kai kang',
-  posterUrl: 'https://pbs.twimg.com/media/FqlTSTOWYAA7yKN?format=jpg&name=small',
-  title: 'Tweeting is Mining!',
+export interface AdMetaData {
+  icon: string;
+  poster: string;
+  title: string;
+  tag: string;
+  url: string;
+  rewardTokenIcon: string;
+  rewardTokenUnit: string;
+  rewardAmount?: string;
 }
 
-const MOCK_AD_DATA_EMPTY = {
-  isEmpty: true,
-  avatar: 'https://pbs.twimg.com/profile_images/1611305582367215616/4W9XpGpU.jpg',
-  rewardAmount: '300.00',
-  rewardTokenUnit: '$AD3',
-  username: 'kai kang'
+export interface AdData {
+  bidId?: string;
+  bidPageUrl: string;
+  claimPageUrl: string;
+  hnftContractAddress: string;
+  hnftTokenId: number;
+  hnftTokenUri?: unknown;
+  adMetaData?: AdMetaData | null;
 }
 
-export const fetchAdDataByImageUrl = async (imageUrl: string) => {
-  try {
-    console.log('fetching ad data by image url', imageUrl);
+export const fetchAdDataByHnft = async (hnft: {
+  hnftImageUrl?: string;
+  hnftAddress?: string;
+  tokenId?: number;
+}) => {
+  const data = JSON.stringify(hnft);
+  const resp = await fetch(`https://staging.parami.io/airdrop/sdk/api/current/ad`, {
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: data
+  });
 
-    const config = await fetchConfig();
-    return imageUrl
-      ? { ...MOCK_AD_DATA, ...config }
-      : { ...MOCK_AD_DATA_EMPTY, ...config };
-  } catch (error) {
-    // return default empty ad data
-    return MOCK_AD_DATA_EMPTY;
+  if (!resp.ok) {
+    return null; // todo: handle error
   }
-}
 
-export const fetchConfig = async () => {
-  return {
-    bidPageUrl: 'https://gptminer.io/#/bid',
-    ad3Icon: 'https://ipfs.parami.io/ipfs/Qmcjqx3Wu61Aw6AnrEJQKVDFSfSwQAsYJwCMUFsbTXPf3t'
-  }
+  const adData = await resp.json();
+  return adData as AdData;
 }

@@ -1,7 +1,7 @@
 import { Popover } from 'antd';
 import React, { useEffect, useState } from 'react';
 import Advertisement from '../Advertisement/Advertisement';
-import { fetchAdDataByImageUrl } from '../../services/hnft.service';
+import { AdData, fetchAdDataByHnft } from '../../services/hnft.service';
 import HeartIcon from '../HeartIcon/HeartIcon';
 import { isMobile } from 'react-device-detect';
 import MobileDrawer from '../MobileDrawer/MobileDrawer';
@@ -9,21 +9,23 @@ import PropTypes from "prop-types"
 import styles from './HnftBadge.module.scss';
 
 export interface HnftBadgeProps {
-    imageurl: string;
+    hnftImageUrl: string;
+    hnftContractAddress?: string;
+    hnftTokenId?: number;
 }
 
-function HnftBadge({ imageurl }: HnftBadgeProps) {
-    const [adData, setAdData] = useState<any>();
+function HnftBadge({ hnftImageUrl, hnftContractAddress, hnftTokenId }: HnftBadgeProps) {
+    const [adData, setAdData] = useState<AdData | null>();
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
     useEffect(() => {
-        fetchAdDataByImageUrl(imageurl).then(ad => {
+        fetchAdDataByHnft({ hnftImageUrl, hnftAddress: hnftContractAddress, tokenId: hnftTokenId }).then(ad => {
             setAdData(ad);
         })
     }, []);
 
     return <>
-        {adData && <>
+        {adData && adData.hnftTokenUri && <>
             {!isMobile && <>
                 <Popover
                     arrow={false}
@@ -33,38 +35,38 @@ function HnftBadge({ imageurl }: HnftBadgeProps) {
                         backgroundColor: 'transparent',
                     }}
                     placement='topLeft'
-                    content={<Advertisement ad={adData} />}
+                    content={<Advertisement ad={adData} hnftImageUrl={hnftImageUrl} />}
                 >
-                    {adData.isEmpty && <>
+                    {!adData.adMetaData && <>
                         <div className={`${styles.hnftBadge} ${styles.default}`}>
                             <div className={`${styles.iconContainer}`}>
                                 <HeartIcon></HeartIcon>
                             </div>
                         </div>
                     </>}
-                    {!adData.isEmpty && <>
+                    {adData.adMetaData && <>
                         <div className={`${styles.hnftBadge}`} style={{
-                            backgroundImage: `url(${adData.avatar})`,
+                            backgroundImage: `url(${adData.adMetaData.icon})`,
                         }}></div>
                     </>}
                 </Popover>
             </>}
 
             {isMobile && <>
-                {adData.isEmpty && <>
+                {!adData.adMetaData && <>
                     <div className={`${styles.hnftBadge} ${styles.default}`} onClick={() => { setIsDrawerOpen(true) }}>
                         <div className={`${styles.iconContainer}`}>
                             <HeartIcon></HeartIcon>
                         </div>
                     </div>
                 </>}
-                {!adData.isEmpty && <>
+                {adData.adMetaData && <>
                     <div className={`${styles.hnftBadge}`} style={{
-                        backgroundImage: `url(${adData.avatar})`,
+                        backgroundImage: `url(${adData.adMetaData.icon})`,
                     }} onClick={() => { setIsDrawerOpen(true) }}></div>
                 </>}
                 <MobileDrawer open={isDrawerOpen} onClose={() => { setIsDrawerOpen(false) }}>
-                    <Advertisement ad={adData} />
+                    <Advertisement ad={adData} hnftImageUrl={hnftImageUrl} />
                 </MobileDrawer>
             </>}
         </>}
@@ -72,7 +74,7 @@ function HnftBadge({ imageurl }: HnftBadgeProps) {
 };
 
 HnftBadge.propTypes = {
-    imageurl: PropTypes.string.isRequired
+    hnftImageUrl: PropTypes.string.isRequired
 }
 
 export default HnftBadge;
