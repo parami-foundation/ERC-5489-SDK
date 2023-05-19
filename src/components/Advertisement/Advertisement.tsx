@@ -9,6 +9,12 @@ interface AdvertisementProps {
 }
 
 const Advertisement: React.FC<AdvertisementProps> = ({ ad, hnftImageUrl }) => {
+  const bidUrl = `${ad.bidPageUrl}?hnftAddress=${ad.hnftContractAddress}&tokenId=${ad.hnftTokenId}`;
+
+  const openClaimPopup = () => {
+    window.open(`${ad.claimPageUrl}?bidId=${ad.bidId}&tags=${ad.adMetaData?.tag}`, "claimAdWindow", "popup,width=400,height=600");
+  }
+
   return (
     <div className={styles.advertisementContainer}>
       {ad.adMetaData && (
@@ -17,8 +23,7 @@ const Advertisement: React.FC<AdvertisementProps> = ({ ad, hnftImageUrl }) => {
             <UserAvatar src={ad.adMetaData.icon} className={styles.avatar} />
             <div className={styles.sponsorDesc}>
               <span>is sponsoring this hNFT.</span>
-              {/* todo: open bid url with params */}
-              <a className={styles.bidLink} href={ad.bidPageUrl} target='_blank'>
+              <a className={styles.bidLink} href={bidUrl} target='_blank'>
                 Bid on this ad space
               </a>
             </div>
@@ -37,16 +42,19 @@ const Advertisement: React.FC<AdvertisementProps> = ({ ad, hnftImageUrl }) => {
                 <div className={styles.rewardAmount}>
                   <UserAvatar src={ad.adMetaData.rewardTokenIcon} className={styles.avatar} />
                   <div className={styles.rewardInfo}>
-                    <span>{ad.adMetaData.rewardAmount}</span>
-                    <span>{ad.adMetaData.rewardTokenUnit}</span>
+                    {!!ad.adMetaData.rewardAmount && <>
+                      <span>{ad.adMetaData.rewardAmount}</span>
+                    </>}
+                    {!!ad.adMetaData.rewardTokenUnit && <>
+                      <span>{ad.adMetaData.rewardTokenUnit}</span>
+                    </>}
                   </div>
                 </div>
                 <div className={styles.footer}>
                   <div
                     className={`${styles.actionButton} ${styles.left} ${styles.adButton}`}
                     onClick={() => {
-                      // todo: claim
-                      console.log('claim only')
+                      openClaimPopup();
                     }}
                   >
                     Claim
@@ -54,9 +62,8 @@ const Advertisement: React.FC<AdvertisementProps> = ({ ad, hnftImageUrl }) => {
                   <div
                     className={`${styles.actionButton} ${styles.right} ${styles.adButton}`}
                     onClick={() => {
-                      // todo: claim
-                      console.log('claim and learn more')
                       window.open(ad.adMetaData!.url, '_blank');
+                      openClaimPopup();
                     }}
                   >
                     Claim & Learn more
@@ -75,7 +82,6 @@ const Advertisement: React.FC<AdvertisementProps> = ({ ad, hnftImageUrl }) => {
             <div className={styles.daoInfo}>
               <div className={styles.daoInfoText}>
                 <div className={styles.userName}>
-                  {/* todo: nft owner name */}
                   Hyperlink NFT # {ad.hnftTokenId}
                 </div>
               </div>
@@ -89,7 +95,7 @@ const Advertisement: React.FC<AdvertisementProps> = ({ ad, hnftImageUrl }) => {
               <div
                 className={styles.actionButton}
                 onClick={() => {
-                  window.open(ad.bidPageUrl, '_blank');
+                  window.open(bidUrl, '_blank');
                 }}
               >
                 Bid Hyperlink Slot

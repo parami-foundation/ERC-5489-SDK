@@ -1,7 +1,7 @@
 import { Popover } from 'antd';
 import React, { useEffect, useState } from 'react';
 import Advertisement from '../Advertisement/Advertisement';
-import { AdData, fetchAdDataByImageUrl } from '../../services/hnft.service';
+import { AdData, fetchAdDataByHnft } from '../../services/hnft.service';
 import HeartIcon from '../HeartIcon/HeartIcon';
 import { isMobile } from 'react-device-detect';
 import MobileDrawer from '../MobileDrawer/MobileDrawer';
@@ -14,18 +14,18 @@ export interface HnftBadgeProps {
     hnftTokenId?: number;
 }
 
-function HnftBadge({hnftImageUrl, hnftContractAddress, hnftTokenId}: HnftBadgeProps) {
+function HnftBadge({ hnftImageUrl, hnftContractAddress, hnftTokenId }: HnftBadgeProps) {
     const [adData, setAdData] = useState<AdData | null>();
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
     useEffect(() => {
-        fetchAdDataByImageUrl({hnftImageUrl, hnftContractAddress, hnftTokenId}).then(ad => {
+        fetchAdDataByHnft({ hnftImageUrl, hnftAddress: hnftContractAddress, tokenId: hnftTokenId }).then(ad => {
             setAdData(ad);
         })
     }, []);
 
     return <>
-        {adData && <>
+        {adData && adData.hnftTokenUri && <>
             {!isMobile && <>
                 <Popover
                     arrow={false}
@@ -74,7 +74,7 @@ function HnftBadge({hnftImageUrl, hnftContractAddress, hnftTokenId}: HnftBadgePr
 };
 
 HnftBadge.propTypes = {
-    imageurl: PropTypes.string.isRequired
+    hnftImageUrl: PropTypes.string.isRequired
 }
 
 export default HnftBadge;
