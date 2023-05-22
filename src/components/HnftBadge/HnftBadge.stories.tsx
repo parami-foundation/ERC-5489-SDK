@@ -34,13 +34,18 @@ NotHNFT.args = {
 export const NoAd = Template.bind({});
 NoAd.args = {
   hnftContractAddress: '0x94F25955e84682BbE5301537f29442Ce1D5b7584',
-  hnftTokenId: 1,
+  hnftTokenId: 140,
   hnftImageUrl: nft
 };
 
 export const HasAd = Template.bind({});
 HasAd.args = {
   hnftContractAddress: '0x94F25955e84682BbE5301537f29442Ce1D5b7584',
-  hnftTokenId: 140,
+  hnftTokenId: 1,
   hnftImageUrl: nft
 };
+
+export const ByUrl = Template.bind({});
+ByUrl.args = {
+  hnftImageUrl: 'https://pbs.twimg.com/profile_images/1611305582367215616/4W9XpGpU_normal.jpg'
+}
