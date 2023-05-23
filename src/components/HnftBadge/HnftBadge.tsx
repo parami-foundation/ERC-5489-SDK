@@ -74,7 +74,9 @@ function HnftBadge({ hnftImageUrl, hnftContractAddress, hnftTokenId }: HnftBadge
 };
 
 HnftBadge.propTypes = {
-    hnftImageUrl: PropTypes.string.isRequired
+    hnftImageUrl: PropTypes.string.isRequired,
+    hnftContractAddress: PropTypes.string,
+    hnftTokenId: PropTypes.number,
 }
 
 export default HnftBadge;
