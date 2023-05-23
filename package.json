@@ -1,12 +1,14 @@
 {
   "name": "hyperlink-nft-badge",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "A simple SDK for enabling hyperlink of your NFT",
   "scripts": {
     "rollup": "rollup -c",
     "test": "jest",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "predeploy": "npm run build-storybook",
+    "deploy": "gh-pages -d storybook-static"
   },
   "author": "Kai Kang",
   "license": "ISC",
@@ -33,6 +35,7 @@
     "babel-jest": "^27.3.1",
     "babel-loader": "^8.2.3",
     "css-loader": "^6.5.1",
+    "gh-pages": "^5.0.0",
     "html-webpack-plugin": "^5.5.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^28.1.3",
