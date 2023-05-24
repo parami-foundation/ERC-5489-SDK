@@ -1,0 +1,100 @@
+<Meta title="ERC5489/API" />
+
+# Fetch AD APIs
+
+You can directly retrieve the advertisement information on hNFTs with our API through HTTP requests.
+
+# POST /current/ad
+
+Returns a variety of information about the current active advertisement on an hNFT.
+
+## Endpoint URL
+```
+https://staging.parami.io/airdrop/sdk/api/current/ad
+```
+
+## JSON body parameters
+| Name     | Type | Description |
+| -------- | ---- | ----------- |
+| `hnftAddress` (optional)  | string | The contract address of NFT |
+| `tokenId` (optional)      | string | The tokenId of NFT |
+| `hnftImageUrl` (optional) | string | The url of the image of NFT. This is only used by a particular use case where your app only knows the image of a NFT. |
+
+## Example code
+### TypeScript
+```ts
+const fetchAdDataByHnft = async (hnft: {
+  hnftImageUrl?: string;
+  hnftAddress?: string;
+  tokenId?: number;
+}) => {
+  const data = JSON.stringify(hnft);
+  const resp = await fetch(`https://staging.parami.io/airdrop/sdk/api/current/ad`, {
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: data
+  });
+
+  if (!resp.ok) {
+    return null;
+  }
+
+  const adData = await resp.json();
+  return adData;
+}
+```
+
+## Example responses
+### Successful response
+```json
+{
+  "bidPageUrl":"https://gptminer.io/#/bid",
+  "claimPageUrl":"https://gptminer.io/#/claim/ad",
+  "hnftContractAddress":"0x94F25955e84682BbE5301537f29442Ce1D5b7584",
+  "hnftTokenId":1,
+  "hnftTokenUri":{
+    "name":"Hyperlink NFT Collection # 1",
+    "description":"Hyperlink NFT collection created with Parami Foundation",
+    "image":"https://pbs.twimg.com/profile_images/1611305582367215616/4W9XpGpU.jpg"
+  },
+  "bidId":"75056847899679972245599560369814062986179899380407317279196246064634651747202",
+  "adMetaData":{
+    "icon":"https://pbs.twimg.com/profile_images/1611305582367215616/4W9XpGpU.jpg",
+    "poster":"https://pbs.twimg.com/media/FqlTSTOWYAA7yKN?format=jpg&name=small",
+    "title":"Tweeting is Mining!",
+    "tag":"twitter",
+    "url":"https://twitter.com/ParamiProtocol",
+    "rewardTokenIcon":"https://ipfs.parami.io/ipfs/Qmcjqx3Wu61Aw6AnrEJQKVDFSfSwQAsYJwCMUFsbTXPf3t",
+    "rewardTokenUnit":"$AD3"
+  }
+}
+```
+
+### Possible Errors
+| HTTP Error Code | Message | Explanation |
+| --------------- | ------- | ----------- |
+| `404` | "no hnft found" | Cannot find any hNFT matching the address, tokenId or imageUrl |
+| `400` | "parameter incorrect" | Provided hNFT information is insufficient. e.g. missing address and/or tokenId of hNFT |
+| `500` | "Internal Server Error" | Unknown server side error |
+
+## Response fields
+
+| Name | Type | Description |
+| -------- | ---- | ----------- |
+| `bidPageUrl`   | string | The url of the web page where user could bid new advertisement on hNFT |
+| `claimPageUrl` | string | The url of the web page where user could claim the reward of the current advertisement (if any) |
+| `hnftContractAddress` | string | The contract address of the hNFT |
+| `hnftTokenId` | number | The tokenId of the hNFT |
+| `hnftTokenUri` | object | The tokenUri of the hNFT |
+| `bidId` | string | The bidId of the current advertisement placed on this hNFT. An empty bidId means that there is no active advertisement on this hNFT |
+| `adMetaData` | object | The metadata of the current active advertisement (if any) |
+| `adMetaData.icon` | string | An small icon of the advertisor |
+| `adMetaData.poster` | string | The poster of the advertisement |
+| `adMetaData.title` | string | The advertisement headline |
+| `adMetaData.url` | string | The landing page URL |
+| `adMetaData.tag` | string | A tag of the advertisement for personalized advertising |
+| `adMetaData.rewardTokenIcon` | string | The icon of the reward token which the user may receive |
+| `adMetaData.rewardTokenUnit` | string | The symbol of the reward token which the user may receive |
+| `adMetaData.rewardAmount` | string | The amount of the reward token which the user may receive |
