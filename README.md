@@ -1,1 +1,59 @@
-# ERC-5489 SDK
+# ERC-5489 NFT Hyperlink Extension SDK
+
+Welcome to the documentation for the ERC-5489 NFT Hyperlink Extension SDK.
+This SDK provides a convenient way for developers to interact with hNFTs (NFTs with hyperlinks) on the Ethereum (or any EVM compatible) blockchain.
+With this SDK, developers can easily utilize and manage hyperlinks attached to NFTs.
+
+See live demo [here](https://parami-foundation.github.io/ERC-5489-SDK/?path=/story/erc5489-hnftbadge--has-ad).
+
+# Getting Started
+
+## Installation
+To install the [ERC-5489 NFT Hyperlink Extension SDK](https://www.npmjs.com/package/hyperlink-nft-badge), follow these steps:
+
+- Open your terminal or command prompt.
+- Navigate to your project directory.
+- Run the following command to install the SDK via npm:
+
+```shell
+npm install hyperlink-nft-badge
+```
+
+Alternatively, you can use yarn:
+
+```shell
+yarn add hyperlink-nft-badge
+```
+
+Once the installation is complete, you can import the SDK into your project and start using its functionalities.
+
+## Usage
+The ERC-5489 NFT Hyperlink Extension SDK provides several methods for interacting with hNFTs. Here's an overview of the available functionalities.
+
+### Use as React Component
+```jsx
+import { HnftBadge } from 'hyperlink-nft-badge';
+
+<div className='badge-container'>
+  <HnftBadge hnftImageUrl={imageUrl} hnftContractAddress={hnftContractAddr} hnftTokenId={hnftTokenId}></HnftBadge>
+</div>
+```
+
+### Use as Web Components
+`import 'hyperlink-nft-badge';` in your top level component. Then use `<hyperlink-nft-badge>` like any other HTML element.
+
+```html
+<div class="badge-container">
+  <hnft-badge hnftImageUrl="https://foo.images.url/123" hnftContractAddress="0x123abc" hnftTokenId="1"></hnft-badge>
+</div>
+```
+
+## API
+The HnftBadge component accepts the following properties:
+
+| Property | Type | Description |
+| -------- | ---- | ----------- |
+| `hnftImageUrl` | string | The url of the image of the NFT |
+| `hnftContractAddress` | string | The contract address of NFT |
+| `hnftTokenId` | number | The tokenId of NFT |
+

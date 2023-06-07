@@ -10,6 +10,7 @@ export default {
 } as ComponentMeta<typeof HnftBadge>;
 
 const Template: ComponentStory<typeof HnftBadge> = (args) => <>
+  <p>When the hyperlink of NFTs is activated and they have associated interactive content, an icon will appear in the upper right corner of the NFT, allowing users to easily interact with it.</p>
   <div style={{width: '200px', position: 'relative'}}>
     <img style={{width: '100%'}} src={nft}></img>
     <div style={{
