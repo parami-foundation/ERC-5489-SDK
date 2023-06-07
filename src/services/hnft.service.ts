@@ -9,6 +9,17 @@ export interface AdMetaData {
   rewardAmount?: string;
 }
 
+export interface GovernanceTokenInfo {
+  name: string;
+  symbol: string;
+  priceInfo?: {
+    price: string;
+    symbol: string;
+    priceChange?: string;
+    dexPoolUrl?: string;
+  }
+}
+
 export interface AdData {
   bidId?: string;
   bidPageUrl: string;
@@ -16,6 +27,9 @@ export interface AdData {
   hnftContractAddress: string;
   hnftTokenId: number;
   hnftTokenUri?: unknown;
+  governanceTokenAddress?: string;
+  governanceTokenInfo?: GovernanceTokenInfo;
+  governanceTokenIcon?: string;
   adMetaData?: AdMetaData | null;
 }
 

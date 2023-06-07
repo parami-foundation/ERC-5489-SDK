@@ -10,7 +10,7 @@ export default {
 } as ComponentMeta<typeof HnftBadge>;
 
 const Template: ComponentStory<typeof HnftBadge> = (args) => <>
-  <div style={{width: '200px', position: 'relative'}}>
+  <div style={{width: '200px', position: 'relative', marginBottom: '30px'}}>
     <img style={{width: '100%'}} src={nft}></img>
     <div style={{
       position: 'absolute',
@@ -20,6 +20,19 @@ const Template: ComponentStory<typeof HnftBadge> = (args) => <>
       height: '30px'
     }}>
       <HnftBadge {...args} />
+    </div>
+  </div>
+
+  <div style={{width: '200px', position: 'relative', marginBottom: '30px'}}>
+    <img style={{width: '100%'}} src={nft}></img>
+    <div style={{
+      position: 'absolute',
+      right: '4px',
+      top: '4px',
+      width: '30px',
+      height: '30px'
+    }}>
+      <HnftBadge {...args} darkMode />
     </div>
   </div>
 </>;

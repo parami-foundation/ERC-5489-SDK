@@ -5,14 +5,15 @@ import styles from './MobileDrawer.module.scss';
 export interface MobileDrawerProps {
     closable?: boolean,
     children: React.ReactNode,
-    onClose?: () => void
-    open?: boolean
+    onClose?: () => void,
+    open?: boolean,
+    darkMode?: boolean
 }
 
-function MobileDrawer({ children, closable = true, onClose, open = true }: MobileDrawerProps) {
+function MobileDrawer({ children, closable = true, onClose, open = true, darkMode = false }: MobileDrawerProps) {
     return <>
         <Drawer
-            className={styles.mobileDrawer}
+            className={`${styles.mobileDrawer} ${darkMode ? styles.dark : ''}`}
             title={null}
             placement={'bottom'}
             closable={false}

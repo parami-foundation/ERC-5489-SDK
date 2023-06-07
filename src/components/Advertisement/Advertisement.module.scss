@@ -14,12 +14,44 @@
 }
 
 .advertisementContainer {
+  &.dark {
+    .bidSection {
+      background: #10121A;
+    }
+
+    .sponsorInfo {
+      background: #161820;
+      border: 1px solid rgba(255, 255, 255, 0.13);
+
+      .sponsorDesc {
+        >span {
+          color: rgba(255, 255, 255, 0.5)
+        }
+      }
+
+      .adSection {
+        background: #10121A;
+        border: 1px solid rgba(255, 255, 255, 0.13);
+        color: #fff;
+
+        .adSectionArrow {
+          background: #10121A;
+          border-top: 1px solid rgba(255, 255, 255, 0.13);
+          border-left: 1px solid rgba(255, 255, 255, 0.13);
+        }
+      }
+
+      .adHeader {
+        color: #fff;
+      }
+    }
+  }
+
   .bidSection {
     display: flex;
     flex-direction: column;
     padding: 20px;
     width: 287px;
-    background: #10121A;
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 20px;
 
@@ -64,8 +96,8 @@
 
   .sponsorInfo {
     padding: 28px 28px 20px 28px;
-    background: #161820;
-    border: 1px solid rgba(255, 255, 255, 0.13);
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.13);
     border-radius: 20px;
     width: 564px;
 
@@ -77,12 +109,9 @@
     .sponsorDesc {
       display: flex;
       flex-direction: column;
+      flex-grow: 1;
       font-size: 24px;
       margin-left: 12px;
-
-      >span {
-        color: rgba(255, 255, 255, 0.5)
-      }
 
       .bidLink {
         cursor: pointer;
@@ -94,9 +123,47 @@
       }
     }
 
+    .tokenPriceInfo {
+      display: flex;
+      flex-direction: column;
+
+      .price {
+        color: #10121A;
+        font-size: 20px;
+        line-height: 23px;
+
+        .value {
+          margin-right: 3px;
+        }
+      }
+
+      .priceChange {
+        display: flex;
+        width: fit-content;
+        border-radius: 4px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 16px;
+        color: #FFFFFF;
+
+        &.priceUp {
+          background: #1DD488;
+        }
+
+        &.priceDown {
+          background: #F56B65;
+        }
+
+        .arrowIcon {
+          display: flex;
+          align-items: center;
+          margin-right: 3px;
+        }
+      }
+    }
+
     .adSection {
-      background: #10121A;
-      border: 1px solid rgba(255, 255, 255, 0.13);
+      border: 1px solid rgba(0, 0, 0, 0.13);
       border-radius: 10px;
       margin-top: 24px;
       font-size: 24px;
@@ -111,10 +178,10 @@
         left: 24px;
         top: -11px;
         z-index: 1;
-        background: #10121A;
+        background: #ffffff;
         border-top-left-radius: 5px;
-        border-top: 1px solid rgba(255, 255, 255, 0.13);
-        border-left: 1px solid rgba(255, 255, 255, 0.13);
+        border-top: 1px solid rgba(0, 0, 0, 0.13);
+        border-left: 1px solid rgba(0, 0, 0, 0.13);
       }
 
       .actionButton {
@@ -128,8 +195,8 @@
     }
 
     .adHeader {
+      color: #020510;
       font-size: 24px;
-      color: #fff;
       padding: 24px 24px 8px 24px;
     }
 
@@ -254,7 +321,8 @@
 
       .adSection,
       .adDeader,
-      .sponsorDesc, .adHeader {
+      .sponsorDesc,
+      .adHeader {
         font-size: 15px;
       }
 

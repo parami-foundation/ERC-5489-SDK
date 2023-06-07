@@ -1,7 +1,11 @@
 .mobileDrawer {
-  color: #ffffff;
-  background: #10121A !important;
   border-radius: 20px 20px 0 0;
+  color: #020510;
+
+  &.dark {
+    color: #ffffff;
+    background: #10121A !important;
+  }
 
   .closeHeader {
     position: absolute;
