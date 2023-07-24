@@ -1,12 +1,12 @@
 import { Popover } from 'antd';
 import React, { useEffect, useState } from 'react';
-import Advertisement from '../Advertisement/Advertisement';
 import { AdData, fetchAdDataByHnft } from '../../services/hnft.service';
 import HeartIcon from '../HeartIcon/HeartIcon';
 import { isMobile } from 'react-device-detect';
 import MobileDrawer from '../MobileDrawer/MobileDrawer';
 import PropTypes from "prop-types"
 import styles from './HnftBadge.module.scss';
+import Chatbot from '../Chatbot/Chatbot';
 
 export interface HnftBadgeProps {
     hnftImageUrl: string;
@@ -36,7 +36,8 @@ function HnftBadge({ hnftImageUrl, hnftContractAddress, hnftTokenId, darkMode = 
                         backgroundColor: 'transparent',
                     }}
                     placement='topLeft'
-                    content={<Advertisement ad={adData} hnftImageUrl={hnftImageUrl} darkMode={darkMode} />}
+                    content={<Chatbot></Chatbot>}
+                    trigger="click"
                 >
                     {!adData.adMetaData && <>
                         <div className={`${styles.hnftBadge} ${styles.default}`}>
@@ -67,7 +68,7 @@ function HnftBadge({ hnftImageUrl, hnftContractAddress, hnftTokenId, darkMode = 
                     }} onClick={() => { setIsDrawerOpen(true) }}></div>
                 </>}
                 <MobileDrawer open={isDrawerOpen} onClose={() => { setIsDrawerOpen(false) }} darkMode={darkMode} >
-                    <Advertisement ad={adData} hnftImageUrl={hnftImageUrl} darkMode={darkMode} />
+                    <Chatbot></Chatbot>
                 </MobileDrawer>
             </>}
         </>}
