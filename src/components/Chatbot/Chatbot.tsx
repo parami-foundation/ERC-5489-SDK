@@ -22,10 +22,10 @@ const elon = {
 
 let socket: WebSocket;
 
-let wsEndpoint = 'parami-realchar.azurewebsites.net';
+let wsEndpoint = '54.163.220.222:8000';
 
 const selectCharacter = () => {
-    socket.send('1');
+    socket.send('2');
 }
 
 function Chatbot({ }: ChatbotProps) {
@@ -54,7 +54,7 @@ function Chatbot({ }: ChatbotProps) {
         // chatWindow.value = "";
         const clientId = Math.floor(Math.random() * 1010000);
         // var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
-        const ws_scheme = "wss";
+        const ws_scheme = "ws";
         const ws_path = ws_scheme + '://' + `${wsEndpoint}` + `/ws/${clientId}`;
         socket = new WebSocket(ws_path);
         socket.binaryType = 'arraybuffer';
