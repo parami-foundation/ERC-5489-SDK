@@ -22,16 +22,26 @@ const elon = {
 
 let socket: WebSocket;
 
-let wsEndpoint = '54.163.220.222:8000';
+let wsEndpoint = 'ai.parami.io';
 
-const selectCharacter = () => {
-    socket.send('2');
-}
+const characters = [
+    {
+        name: 'Elon Musk',
+        id: '6',
+        avatar: 'https://pbs.twimg.com/profile_images/1590968738358079488/IY9Gx6Ok.jpg'
+    },
+    {
+        name: 'Justin Sun',
+        id: '1',
+        avatar: 'https://pbs.twimg.com/profile_images/1490173066357342208/MZyfamFE.jpg'
+    }
+];
 
 function Chatbot({ }: ChatbotProps) {
     const [audioQueue, setAudioQueue] = useState<any[]>([]);
     const [currentAudio, setCurrentAudio] = useState<any>();
     const audioPlayer = useRef<HTMLAudioElement>(null);
+    const [selectedCharacter, setSelectedCharacter] = useState<any>();
 
     const [messages, setMessages] = useState<{ user: any, text: string }[]>([]);
     const [newMessage, setNewMessage] = useState<string>('');
@@ -43,7 +53,7 @@ function Chatbot({ }: ChatbotProps) {
     useEffect(() => {
         if (newMessage && newMessage.endsWith(END_MARK)) {
             setMessages([...messages, {
-                user: elon,
+                user: selectedCharacter,
                 text: newMessage.slice(0, -END_MARK.length)
             }])
             setNewMessage('');
@@ -54,7 +64,7 @@ function Chatbot({ }: ChatbotProps) {
         // chatWindow.value = "";
         const clientId = Math.floor(Math.random() * 1010000);
         // var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
-        const ws_scheme = "ws";
+        const ws_scheme = "wss";
         const ws_path = ws_scheme + '://' + `${wsEndpoint}` + `/ws/${clientId}`;
         socket = new WebSocket(ws_path);
         socket.binaryType = 'arraybuffer';
@@ -70,7 +80,7 @@ function Chatbot({ }: ChatbotProps) {
                 const message = event.data;
                 console.log('[message]', message);
                 if (message.startsWith('Select')) {
-                    selectCharacter();
+                    // selectCharacter();
                 } else if (message.startsWith('[+]')) {
                     // [+] indicates the transcription is done. stop playing audio
                     //   chatWindow.value += `\nYou> ${message}\n`;
@@ -96,6 +106,11 @@ function Chatbot({ }: ChatbotProps) {
         socket.onclose = (event) => {
             console.log("Socket closed");
         };
+    }
+
+    const onSelectCharacter = (character: any) => {
+        setSelectedCharacter(character);
+        socket.send(character.id);
     }
 
     useEffect(() => {
@@ -141,53 +156,70 @@ function Chatbot({ }: ChatbotProps) {
 
     return <>
         <div className={`${styles.chatbotContainer}`}>
-            <div className={`${styles.chatbotContent}`}>
-                <div className={`${styles.messageContainer}`}>
-                    <MessageList>
-                        {messages.length > 0 && <>
-                            {messages.map((message, index) => {
-                                const isElon = message.user?.id === elon.id;
-                                return <>
-                                    <Message
-                                        model={{
-                                            direction: isElon ? "incoming" : "outgoing",
-                                            position: "single",
-                                            message: message.text
-                                        }}
-                                        key={`msg-${index}`}
-                                    >
-                                        {isElon && <Avatar src={elon.avatar}></Avatar>}
-                                    </Message>
-                                </>
-                            })}
-                        </>}
-
-                        {!!newMessage && <>
-                            <Message
-                                model={{
-                                    message: newMessage,
-                                    direction: "incoming",
-                                    position: "last"
-                                }}
-                            >
-                                <Avatar src={elon.avatar} name="Elon" />
-                            </Message>
-                        </>}
-                    </MessageList>
+            {!selectedCharacter && <>
+                <div className={`${styles.characters}`}>
+                    {characters.map(char => {
+                        return <>
+                            <div className={`${styles.characterCard}`} key={char.id} onClick={() => {
+                                onSelectCharacter(char);
+                            }}>
+                                <img className={`${styles.avatar}`} src={char.avatar} referrerPolicy='no-referrer'></img>
+                                <div className={`${styles.name}`}>{char.name}</div>
+                            </div>
+                        </>
+                    })}
                 </div>
+            </>}
 
-                <div className={`${styles.messageInput}`}>
-                    <MessageInput onSend={text => {
-                        handleSendMessage(text);
-                    }} />
-                </div>
+            {selectedCharacter && <>
+                <div className={`${styles.chatbotContent}`}>
+                    <div className={`${styles.messageContainer}`}>
+                        <MessageList>
+                            {messages.length > 0 && <>
+                                {messages.map((message, index) => {
+                                    const isChar = message.user?.id === selectedCharacter.id;
+                                    return <>
+                                        <Message
+                                            model={{
+                                                direction: isChar ? "incoming" : "outgoing",
+                                                position: "single",
+                                                message: message.text
+                                            }}
+                                            key={`msg-${index}`}
+                                        >
+                                            {isChar && <Avatar src={selectedCharacter.avatar}></Avatar>}
+                                        </Message>
+                                    </>
+                                })}
+                            </>}
 
-                <div className={`${styles.audioContainer}`}>
-                    <audio className="audio-player" ref={audioPlayer}>
-                        <source src="" type="audio/mp3" />
-                    </audio>
+                            {!!newMessage && <>
+                                <Message
+                                    model={{
+                                        message: newMessage,
+                                        direction: "incoming",
+                                        position: "last"
+                                    }}
+                                >
+                                    <Avatar src={selectedCharacter.avatar} name="Elon" />
+                                </Message>
+                            </>}
+                        </MessageList>
+                    </div>
+
+                    <div className={`${styles.messageInput}`}>
+                        <MessageInput onSend={text => {
+                            handleSendMessage(text);
+                        }} />
+                    </div>
+
+                    <div className={`${styles.audioContainer}`}>
+                        <audio className="audio-player" ref={audioPlayer}>
+                            <source src="" type="audio/mp3" />
+                        </audio>
+                    </div>
                 </div>
-            </div>
+            </>}
         </div>
     </>;
 };
