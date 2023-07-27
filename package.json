@@ -1,6 +1,6 @@
 {
   "name": "hyperlink-nft-badge",
-  "version": "0.1.10",
+  "version": "0.1.17",
   "description": "A simple SDK for enabling hyperlink of your NFT",
   "scripts": {
     "rollup": "rollup -c",
@@ -56,6 +56,7 @@
     "dist"
   ],
   "dependencies": {
+    "@ant-design/icons": "^5.1.4",
     "@chatscope/chat-ui-kit-react": "^1.10.1",
     "@chatscope/chat-ui-kit-styles": "^1.4.0",
     "antd": "^5.4.6",
