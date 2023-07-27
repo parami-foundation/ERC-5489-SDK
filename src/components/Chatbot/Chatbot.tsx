@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styles from './Chatbot.module.scss';
 import { useRef } from 'react';
-import { Avatar, Message, MessageInput, MessageList } from '@chatscope/chat-ui-kit-react';
 
 export interface ChatbotProps { }
 
@@ -12,28 +11,28 @@ const currentUser = {
     "name": "me",
 }
 
-const elonMuskId = 'elon_musk';
-
-const elon = {
-    "id": "elon_musk",
-    "name": "Elon",
-    avatar: 'https://pbs.twimg.com/profile_images/1590968738358079488/IY9Gx6Ok.jpg'
-}
-
 let socket: WebSocket;
 
 let wsEndpoint = 'ai.parami.io';
 
 const characters = [
     {
+        name: 'Adam Jones',
+        id: '1',
+        avatar: 'https://pbs.twimg.com/profile_images/1580754592052129795/sbX8c7Zk.jpg',
+        background: 'https://pbs.twimg.com/profile_banners/1198940533621551105/1651744578/600x200'
+    },
+    {
         name: 'Elon Musk',
-        id: '6',
-        avatar: 'https://pbs.twimg.com/profile_images/1590968738358079488/IY9Gx6Ok.jpg'
+        id: '7',
+        avatar: 'https://pbs.twimg.com/profile_images/1590968738358079488/IY9Gx6Ok.jpg',
+        background: 'https://pbs.twimg.com/media/F1toFHCXoAA7fUK?format=jpg&name=small'
     },
     {
         name: 'Justin Sun',
-        id: '1',
-        avatar: 'https://pbs.twimg.com/profile_images/1490173066357342208/MZyfamFE.jpg'
+        id: '2',
+        avatar: 'https://pbs.twimg.com/profile_images/1490173066357342208/MZyfamFE.jpg',
+        background: 'https://pbs.twimg.com/media/F1-A-_zWEAQKgzp?format=jpg&name=small'
     }
 ];
 
@@ -45,6 +44,8 @@ function Chatbot({ }: ChatbotProps) {
 
     const [messages, setMessages] = useState<{ user: any, text: string }[]>([]);
     const [newMessage, setNewMessage] = useState<string>('');
+    const [inputValue, setInputValue] = useState<string>();
+    const [loading, setLoading] = useState<boolean>(true);
 
     const handleMessageStream = (msg: string) => {
         setNewMessage(prevMessage => prevMessage + msg);
@@ -81,6 +82,7 @@ function Chatbot({ }: ChatbotProps) {
                 console.log('[message]', message);
                 if (message.startsWith('Select')) {
                     // selectCharacter();
+                    setLoading(false);
                 } else if (message.startsWith('[+]')) {
                     // [+] indicates the transcription is done. stop playing audio
                     //   chatWindow.value += `\nYou> ${message}\n`;
@@ -156,70 +158,68 @@ function Chatbot({ }: ChatbotProps) {
 
     return <>
         <div className={`${styles.chatbotContainer}`}>
-            {!selectedCharacter && <>
-                <div className={`${styles.characters}`}>
-                    {characters.map(char => {
-                        return <>
-                            <div className={`${styles.characterCard}`} key={char.id} onClick={() => {
-                                onSelectCharacter(char);
-                            }}>
-                                <img className={`${styles.avatar}`} src={char.avatar} referrerPolicy='no-referrer'></img>
-                                <div className={`${styles.name}`}>{char.name}</div>
+            {!loading && <>
+                {!selectedCharacter && <>
+                    <div className={`${styles.characters}`}>
+                        {characters.map(char => {
+                            return <>
+                                <div className={`${styles.characterCard}`} key={char.id} onClick={() => {
+                                    onSelectCharacter(char);
+                                }}>
+                                    <img className={`${styles.avatar}`} src={char.avatar} referrerPolicy='no-referrer'></img>
+                                    <div className={`${styles.name}`}>{char.name}</div>
+                                </div>
+                            </>
+                        })}
+                    </div>
+                </>}
+
+                {selectedCharacter && <>
+                    <div className={`${styles.chatbotContent}`}>
+                        <div className={`${styles.backgroundContainer}`}>
+                            <img className={`${styles.background}`} src={selectedCharacter.background} referrerPolicy='no-referrer'></img>
+                        </div>
+                        <div className={`${styles.messageContainer}`}>
+                            <div className={`${styles.messageList}`}>
+                                {messages.length > 0 && <>
+                                    {messages.map((message, index) => {
+                                        const isUser = message.user?.id !== selectedCharacter.id;
+                                        return <>
+                                            <div className={`${styles.message} ${isUser ? styles.isUser : ''}`} key={`msg-${index}`}>
+                                                {message.text}
+                                            </div>
+                                        </>
+                                    })}
+                                </>}
+
+                                {!!newMessage && <>
+                                    <div className={`${styles.message}`}>
+                                        {newMessage}
+                                    </div>
+                                </>}
                             </div>
-                        </>
-                    })}
-                </div>
+                        </div>
+
+                        <div className={`${styles.messageInput}`}>
+                            <input className={`${styles.textInput}`} value={inputValue} onKeyDown={(event) => {
+                                if (event.key === 'Enter') {
+                                    event.preventDefault();
+                                    const msg = event.target.value;
+                                    setInputValue('');
+                                    handleSendMessage(msg);
+                                }
+                            }}></input>
+                        </div>
+
+                        <div className={`${styles.audioContainer}`}>
+                            <audio className="audio-player" ref={audioPlayer}>
+                                <source src="" type="audio/mp3" />
+                            </audio>
+                        </div>
+                    </div>
+                </>}
             </>}
 
-            {selectedCharacter && <>
-                <div className={`${styles.chatbotContent}`}>
-                    <div className={`${styles.messageContainer}`}>
-                        <MessageList>
-                            {messages.length > 0 && <>
-                                {messages.map((message, index) => {
-                                    const isChar = message.user?.id === selectedCharacter.id;
-                                    return <>
-                                        <Message
-                                            model={{
-                                                direction: isChar ? "incoming" : "outgoing",
-                                                position: "single",
-                                                message: message.text
-                                            }}
-                                            key={`msg-${index}`}
-                                        >
-                                            {isChar && <Avatar src={selectedCharacter.avatar}></Avatar>}
-                                        </Message>
-                                    </>
-                                })}
-                            </>}
-
-                            {!!newMessage && <>
-                                <Message
-                                    model={{
-                                        message: newMessage,
-                                        direction: "incoming",
-                                        position: "last"
-                                    }}
-                                >
-                                    <Avatar src={selectedCharacter.avatar} name="Elon" />
-                                </Message>
-                            </>}
-                        </MessageList>
-                    </div>
-
-                    <div className={`${styles.messageInput}`}>
-                        <MessageInput onSend={text => {
-                            handleSendMessage(text);
-                        }} />
-                    </div>
-
-                    <div className={`${styles.audioContainer}`}>
-                        <audio className="audio-player" ref={audioPlayer}>
-                            <source src="" type="audio/mp3" />
-                        </audio>
-                    </div>
-                </div>
-            </>}
         </div>
     </>;
 };

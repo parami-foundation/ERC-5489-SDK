@@ -38,19 +38,23 @@ export const fetchAdDataByHnft = async (hnft: {
   hnftAddress?: string;
   tokenId?: number;
 }) => {
-  const data = JSON.stringify(hnft);
-  const resp = await fetch(`https://staging.parami.io/airdrop/sdk/api/current/ad`, {
-    method: 'post',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: data
-  });
+  // mock hnft
+  return {
+    hnftTokenUri: 'hnft',
+  } as AdData;
+  // const data = JSON.stringify(hnft);
+  // const resp = await fetch(`https://staging.parami.io/airdrop/sdk/api/current/ad`, {
+  //   method: 'post',
+  //   headers: {
+  //     'Content-Type': 'application/json'
+  //   },
+  //   body: data
+  // });
 
-  if (!resp.ok) {
-    return null; // todo: handle error
-  }
+  // if (!resp.ok) {
+  //   return null; // todo: handle error
+  // }
 
-  const adData = await resp.json();
-  return adData as AdData;
+  // const adData = await resp.json();
+  // return adData as AdData;
 }

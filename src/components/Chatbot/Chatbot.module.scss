@@ -5,10 +5,10 @@
   height: 400px;
   background: #fff;
   border-radius: 20px;
-  box-shadow: 0 0 0 1px rgba(53,72,91,.07), 0 2px 2px rgba(0,0,0,.01), 0 4px 4px rgba(0,0,0,.02), 0 10px 8px rgba(0,0,0,.03), 0 15px 15px rgba(0,0,0,.03), 0 30px 30px rgba(0,0,0,.04), 0 70px 65px rgba(0,0,0,.05);
+  box-shadow: 0 0 0 1px rgba(53, 72, 91, .07), 0 2px 2px rgba(0, 0, 0, .01), 0 4px 4px rgba(0, 0, 0, .02), 0 10px 8px rgba(0, 0, 0, .03), 0 15px 15px rgba(0, 0, 0, .03), 0 30px 30px rgba(0, 0, 0, .04), 0 70px 65px rgba(0, 0, 0, .05);
+  overflow: scroll;
 
   .chatbotContent {
-    padding: 20px 0;
     box-sizing: border-box;
     width: 100%;
     height: 100%;
@@ -17,14 +17,51 @@
     align-items: center;
   }
 
+  .backgroundContainer {
+    width: 100%;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+
+    .background {
+      width: 100%;
+    }
+  }
+
   .messageContainer {
     width: 100%;
-    height: 320px;
+    height: 140px;
+    overflow: scroll;
+    padding: 5px 0;
+
+    .messageList {
+      padding: 0 10px;
+      .message {
+        color: #6ea9d7;
+
+        &.isUser {
+          color: #000;
+        }
+      }
+    }
   }
+
 
   .messageInput {
     margin-top: 10px;
     width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+
+    .textInput {
+      width: 280px;
+      box-sizing: border-box;
+      border: none;
+      background: aliceblue;
+      padding: 10px;
+      border-radius: 5px;
+    }
   }
 
   .audioContainer {
@@ -41,10 +78,11 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+
       &:hover {
         cursor: pointer;
       }
-      
+
       .avatar {
         width: 100px;
         height: 100px;
