@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import styles from './Chatbot.module.scss';
 import { useRef } from 'react';
+import { Character, characters } from '../../models/character';
 
-export interface ChatbotProps { }
+export interface ChatbotProps {
+    character: Character;
+}
 
 const END_MARK = '[end]\n';
 
@@ -15,32 +18,11 @@ let socket: WebSocket;
 
 let wsEndpoint = 'ai.parami.io';
 
-const characters = [
-    {
-        name: 'Adam Jones',
-        id: '1',
-        avatar: 'https://pbs.twimg.com/profile_images/1580754592052129795/sbX8c7Zk.jpg',
-        background: 'https://pbs.twimg.com/profile_banners/1198940533621551105/1651744578/600x200'
-    },
-    {
-        name: 'Elon Musk',
-        id: '7',
-        avatar: 'https://pbs.twimg.com/profile_images/1590968738358079488/IY9Gx6Ok.jpg',
-        background: 'https://pbs.twimg.com/media/F1toFHCXoAA7fUK?format=jpg&name=small'
-    },
-    {
-        name: 'Justin Sun',
-        id: '2',
-        avatar: 'https://pbs.twimg.com/profile_images/1490173066357342208/MZyfamFE.jpg',
-        background: 'https://pbs.twimg.com/media/F1-A-_zWEAQKgzp?format=jpg&name=small'
-    }
-];
-
-function Chatbot({ }: ChatbotProps) {
+function Chatbot({ character }: ChatbotProps) {
     const [audioQueue, setAudioQueue] = useState<any[]>([]);
     const [currentAudio, setCurrentAudio] = useState<any>();
     const audioPlayer = useRef<HTMLAudioElement>(null);
-    const [selectedCharacter, setSelectedCharacter] = useState<any>();
+    // const [selectedCharacter, setSelectedCharacter] = useState<any>();
 
     const [messages, setMessages] = useState<{ user: any, text: string }[]>([]);
     const [newMessage, setNewMessage] = useState<string>('');
@@ -54,7 +36,7 @@ function Chatbot({ }: ChatbotProps) {
     useEffect(() => {
         if (newMessage && newMessage.endsWith(END_MARK)) {
             setMessages([...messages, {
-                user: selectedCharacter,
+                user: character,
                 text: newMessage.slice(0, -END_MARK.length)
             }])
             setNewMessage('');
@@ -81,7 +63,7 @@ function Chatbot({ }: ChatbotProps) {
                 const message = event.data;
                 console.log('[message]', message);
                 if (message.startsWith('Select')) {
-                    // selectCharacter();
+                    selectCharacter();
                     setLoading(false);
                 } else if (message.startsWith('[+]')) {
                     // [+] indicates the transcription is done. stop playing audio
@@ -110,8 +92,7 @@ function Chatbot({ }: ChatbotProps) {
         };
     }
 
-    const onSelectCharacter = (character: any) => {
-        setSelectedCharacter(character);
+    const selectCharacter = () => {
         socket.send(character.id);
     }
 
@@ -159,7 +140,7 @@ function Chatbot({ }: ChatbotProps) {
     return <>
         <div className={`${styles.chatbotContainer}`}>
             {!loading && <>
-                {!selectedCharacter && <>
+                {/* {!selectedCharacter && <>
                     <div className={`${styles.characters}`}>
                         {characters.map(char => {
                             return <>
@@ -172,18 +153,18 @@ function Chatbot({ }: ChatbotProps) {
                             </>
                         })}
                     </div>
-                </>}
+                </>} */}
 
-                {selectedCharacter && <>
+                {<>
                     <div className={`${styles.chatbotContent}`}>
                         <div className={`${styles.backgroundContainer}`}>
-                            <img className={`${styles.background}`} src={selectedCharacter.background} referrerPolicy='no-referrer'></img>
+                            <img className={`${styles.background}`} src={character.background} referrerPolicy='no-referrer'></img>
                         </div>
                         <div className={`${styles.messageContainer}`}>
                             <div className={`${styles.messageList}`}>
                                 {messages.length > 0 && <>
                                     {messages.map((message, index) => {
-                                        const isUser = message.user?.id !== selectedCharacter.id;
+                                        const isUser = message.user?.id !== character.id;
                                         return <>
                                             <div className={`${styles.message} ${isUser ? styles.isUser : ''}`} key={`msg-${index}`}>
                                                 {message.text}

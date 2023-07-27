@@ -59,7 +59,17 @@ HasAd.args = {
   hnftImageUrl: nft
 };
 
-export const ByUrl = Template.bind({});
-ByUrl.args = {
-  hnftImageUrl: 'https://pbs.twimg.com/profile_images/1611305582367215616/4W9XpGpU_normal.jpg'
+export const Justin = Template.bind({});
+Justin.args = {
+  hnftImageUrl: 'https://pbs.twimg.com/profile_images/1490173066357342208/MZyfamFE.jpg'
+}
+
+export const Elon = Template.bind({});
+Elon.args = {
+  hnftImageUrl: 'https://pbs.twimg.com/profile_images/1683325380441128960/yRsRRjGO.jpg'
+}
+
+export const Adam = Template.bind({});
+Adam.args = {
+  hnftImageUrl: 'https://pbs.twimg.com/profile_images/1580754592052129795/sbX8c7Zk.jpg'
 }

@@ -1,6 +1,6 @@
 {
   "name": "hyperlink-nft-badge",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "A simple SDK for enabling hyperlink of your NFT",
   "scripts": {
     "rollup": "rollup -c",

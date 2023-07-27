@@ -1,3 +1,5 @@
+import { Character, characters } from "../models/character";
+
 export interface AdMetaData {
   icon: string;
   poster: string;
@@ -31,6 +33,7 @@ export interface AdData {
   governanceTokenInfo?: GovernanceTokenInfo;
   governanceTokenIcon?: string;
   adMetaData?: AdMetaData | null;
+  character?: Character;
 }
 
 export const fetchAdDataByHnft = async (hnft: {
@@ -38,9 +41,14 @@ export const fetchAdDataByHnft = async (hnft: {
   hnftAddress?: string;
   tokenId?: number;
 }) => {
+  const { hnftImageUrl } = hnft;
+  const char = characters.find(c => {
+    return hnftImageUrl?.includes(c.avatarKey);
+  })
+
   // mock hnft
   return {
-    hnftTokenUri: 'hnft',
+    character: char,
   } as AdData;
   // const data = JSON.stringify(hnft);
   // const resp = await fetch(`https://staging.parami.io/airdrop/sdk/api/current/ad`, {

@@ -26,7 +26,7 @@ function HnftBadge({ hnftImageUrl, hnftContractAddress, hnftTokenId, darkMode = 
     }, []);
 
     return <>
-        {adData && adData.hnftTokenUri && <>
+        {adData && adData.character && <>
             {!isMobile && <>
                 <Popover
                     arrow={false}
@@ -36,8 +36,7 @@ function HnftBadge({ hnftImageUrl, hnftContractAddress, hnftTokenId, darkMode = 
                         backgroundColor: 'transparent',
                     }}
                     placement='topLeft'
-                    content={<Chatbot></Chatbot>}
-                    trigger="click"
+                    content={<Chatbot character={adData.character}></Chatbot>}
                 >
                     {!adData.adMetaData && <>
                         <div className={`${styles.hnftBadge} ${styles.default}`}>
@@ -68,7 +67,7 @@ function HnftBadge({ hnftImageUrl, hnftContractAddress, hnftTokenId, darkMode = 
                     }} onClick={() => { setIsDrawerOpen(true) }}></div>
                 </>}
                 <MobileDrawer open={isDrawerOpen} onClose={() => { setIsDrawerOpen(false) }} darkMode={darkMode} >
-                    <Chatbot></Chatbot>
+                    <Chatbot character={adData.character}></Chatbot>
                 </MobileDrawer>
             </>}
         </>}
