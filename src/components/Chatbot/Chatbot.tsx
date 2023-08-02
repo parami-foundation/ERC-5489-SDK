@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import styles from './Chatbot.module.scss';
 import { useRef } from 'react';
-import { Character, characters } from '../../models/character';
-import { SoundFilled } from '@ant-design/icons';
+import { Character } from '../../models/character';
+import { SoundFilled, CaretDownOutlined, ArrowRightOutlined } from '@ant-design/icons';
+import { useDynamicContext, useAuthenticateConnectedUser } from '@dynamic-labs/sdk-react';
 
 export interface ChatbotProps {
     character: Character;
@@ -12,11 +13,6 @@ const END_MARK = '[end]\n';
 
 // todo: change this
 const GREETING = 'Hi, my friend, what brings you here today?';
-
-const currentUser = {
-    "id": "user_1",
-    "name": "me",
-}
 
 let socket: WebSocket;
 
@@ -29,36 +25,59 @@ function Chatbot({ character }: ChatbotProps) {
     const audioPlayer = useRef<HTMLAudioElement>(null);
     const msgList = useRef<HTMLDivElement>(null);
 
-    const [characterMessages, setCharacterMessages] = useState<string[]>([]);
-    const [userMessage, setUserMessage] = useState<string>('');
-
+    const [messages, setMessages] = useState<{ name: string, msg: string }[]>([]);
     const [newMessage, setNewMessage] = useState<string>('');
     const [inputValue, setInputValue] = useState<string>();
     const [loading, setLoading] = useState<boolean>(true);
 
-    const handleMessageStream = (msg: string) => {
-        setNewMessage(prevMessage => prevMessage + msg);
+    const { authToken, setShowAuthFlow } = useDynamicContext();
+
+    const [questionOption, setQuestionOption] = useState<string>();
+
+    const pickOneQuestion = (options: string[]) => {
+        const randomIndex = Math.floor(Math.random() * options.length);
+        const option = options[randomIndex];
+        return option;
+    }
+
+    useEffect(() => {
+        const question = pickOneQuestion(character.questions);
+        setQuestionOption(question);
+    }, []);
+
+    const scrollDown = () => {
         if (msgList.current) {
             msgList.current.scrollTop = msgList.current.scrollHeight;
         }
     }
 
+    const handleMessageStream = (msg: string) => {
+        setNewMessage(prevMessage => prevMessage + msg);
+        scrollDown();
+    }
+
     useEffect(() => {
         if (newMessage && newMessage.endsWith(END_MARK)) {
-            setCharacterMessages([
-                ...characterMessages,
-                newMessage.slice(0, -END_MARK.length)
-            ])
+            const newMsg = newMessage.slice(0, -END_MARK.length);
+            if (newMsg) {
+                setMessages([
+                    ...messages,
+                    {
+                        name: character.name[0], // todo: config this?
+                        msg: newMsg
+                    }
+                ])
+            }
             setNewMessage('');
         }
     }, [newMessage]);
 
-    const connectSocket = () => {
+    const connectSocket = (authToken: string) => {
         // chatWindow.value = "";
         const clientId = Math.floor(Math.random() * 1010000);
         // var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
         const ws_scheme = "wss";
-        const ws_path = ws_scheme + '://' + `${wsEndpoint}` + `/ws/${clientId}`;
+        const ws_path = ws_scheme + '://' + `${wsEndpoint}` + `/ws/${clientId}?token=${authToken}`;
         socket = new WebSocket(ws_path);
         socket.binaryType = 'arraybuffer';
 
@@ -101,7 +120,7 @@ function Chatbot({ character }: ChatbotProps) {
         };
 
         socket.onclose = (event) => {
-            console.log("Socket closed");
+            console.log("Socket closed", event);
         };
     }
 
@@ -110,8 +129,12 @@ function Chatbot({ character }: ChatbotProps) {
     }
 
     useEffect(() => {
-        connectSocket();
-    }, [])
+        if (authToken) {
+            console.log('authToken:', authToken);
+            console.log('connecting ws...');
+            connectSocket(authToken);
+        }
+    }, [authToken])
 
     useEffect(() => {
         if (audioQueue.length > 0 && !currentAudio) {
@@ -143,76 +166,120 @@ function Chatbot({ character }: ChatbotProps) {
     }
 
     const handleSendMessage = async (text: string) => {
-        setUserMessage(`Me: ${text}`);
+        setMessages([
+            ...messages,
+            {
+                name: 'Y',
+                msg: text
+            }
+        ]);
         socket.send(text);
     }
 
+    useEffect(() => {
+        scrollDown();
+    }, [messages])
+
     return <>
         <div className={`${styles.chatbotContainer}`}>
-            {!loading && <>
-                <div className={`${styles.chatbotContent}`}>
-                    <div className={`${styles.characterContainer}`}>
-                        <div className={`${styles.backgroundContainer}`}>
-                            <img className={`${styles.background}`} src={character.background} referrerPolicy='no-referrer'></img>
-                        </div>
+            {character && <>
+                <div className={`${styles.backgroundContainer}`}>
+                    <img className={`${styles.background}`} src={character.background} referrerPolicy='no-referrer'></img>
+                </div>
+                <div className={`${styles.contentContainer}`}>
+                    <div className={`${styles.header}`}>
+                        <div className={`${styles.name}`}>
+                            {character.name}
 
-                        <div className={`${styles.characterMessageContainer}`} ref={msgList}>
-                            <div className={`${styles.characterMessageList}`}>
-                                {characterMessages.length > 0 && <>
-                                    {characterMessages.map((message, index) => {
-                                        return <>
-                                            <div className={`${styles.message}`} key={`msg-${index}`}>
-                                                {message}
-                                            </div>
-                                        </>
-                                    })}
-                                </>}
-
-                                {!!newMessage && <>
-                                    <div className={`${styles.message}`}>
-                                        {newMessage}
-                                    </div>
-                                </>}
+                            <div className={`${styles.audioButton}`} onClick={() => {
+                                setAudioEnabled(true);
+                            }}>
+                                <SoundFilled />
                             </div>
                         </div>
 
-                        <div className={`${styles.iconContainer}`} onClick={() => {
-                            setAudioEnabled(true);
-                        }}>
-                            <SoundFilled />
+                        <div className={`${styles.token}`}>
+                            <img className={`${styles.tokenIcon}`} src={character.tokenIcon} referrerPolicy='no-referrer'></img>
+                            <div className={`${styles.tokenPrice}`}>
+                                86 ETH
+                            </div>
+                            <div className={`${styles.dropdownArrow}`}>
+                                <CaretDownOutlined />
+                            </div>
                         </div>
                     </div>
 
-                    <div className={`${styles.userMessageContainer}`}>
-                        <div className={`${styles.userMessage}`}>
-                            {userMessage}
-                        </div>
+                    <div className={`${styles.chat}`}>
+                        {!!authToken && <>
+                            <div className={`${styles.messageListContainer}`} ref={msgList}>
+                                <div className={`${styles.messages}`}>
+                                    {messages.length > 0 && <>
+                                        {messages.map(message => {
+                                            return <>
+                                                <div className={`${styles.message}`}>
+                                                    {message.name}: {message.msg}
+                                                </div>
+                                            </>
+                                        })}
+                                    </>}
+
+                                    {newMessage.length > 0 && <>
+                                        <div className={`${styles.message}`}>
+                                            {character.name[0]}: {newMessage}
+                                        </div>
+                                    </>}
+                                </div>
+                            </div>
+                            <div className={`${styles.messageInput}`}>
+                                <input className={`${styles.textInput}`} value={inputValue} autoFocus={true}
+                                    onChange={(event) => {
+                                        setInputValue(event.target.value);
+                                    }}
+                                    onKeyDown={(event) => {
+                                        if (event.key === 'Enter') {
+                                            event.preventDefault();
+                                            const msg = event.target.value;
+                                            setInputValue('');
+                                            handleSendMessage(msg);
+                                        }
+                                    }}
+                                ></input>
+                            </div>
+                        </>}
                     </div>
 
-                    <div className={`${styles.messageInput}`}>
-                        <input className={`${styles.textInput}`} value={inputValue}
-                            onChange={(event) => {
-                                setInputValue(event.target.value);
-                            }}
-                            onKeyDown={(event) => {
-                                if (event.key === 'Enter') {
-                                    event.preventDefault();
-                                    const msg = event.target.value;
-                                    setInputValue('');
-                                    handleSendMessage(msg);
+                    <div className={`${styles.footer}`}>
+                        {!authToken && <>
+                            <div className={`${styles.button}`} onClick={() => {
+                                setShowAuthFlow(true);
+                            }}>
+                                Connect Wallet to Talk
+                            </div>
+                        </>}
+
+                        {!!authToken && <>
+                            <div className={`${styles.button} ${styles.questionOption}`} onClick={() => {
+                                if (questionOption) {
+                                    handleSendMessage(questionOption);
                                 }
-                            }}
-                        ></input>
-                    </div>
-
-                    <div className={`${styles.audioContainer}`}>
-                        <audio className="audio-player" ref={audioPlayer}>
-                            <source src="" type="audio/mp3" />
-                        </audio>
+                                const question = pickOneQuestion(character.questions);
+                                setQuestionOption(question);
+                            }}>
+                                <div>{questionOption}</div>
+                                <div className={`${styles.icon}`}>
+                                    <ArrowRightOutlined />
+                                </div>
+                            </div>
+                        </>}
                     </div>
                 </div>
             </>}
 
+            <div className={`${styles.audioContainer}`}>
+                <audio className="audio-player" ref={audioPlayer}>
+                    <source src="" type="audio/mp3" />
+                </audio>
+            </div>
         </div>
     </>;
 };

@@ -7,6 +7,7 @@ import MobileDrawer from '../MobileDrawer/MobileDrawer';
 import PropTypes from "prop-types"
 import styles from './HnftBadge.module.scss';
 import Chatbot from '../Chatbot/Chatbot';
+import { DynamicContextProvider } from '@dynamic-labs/sdk-react';
 
 export interface HnftBadgeProps {
     hnftImageUrl: string;
@@ -26,20 +27,41 @@ function HnftBadge({ hnftImageUrl, hnftContractAddress, hnftTokenId, darkMode = 
     }, []);
 
     return <>
-        {adData && adData.character && <>
-            {!isMobile && <>
-                <Popover
-                    arrow={false}
-                    overlayInnerStyle={{
-                        boxShadow: 'none',
-                        padding: 0,
-                        backgroundColor: 'transparent',
-                    }}
-                    placement='topLeft'
-                    content={<Chatbot character={adData.character}></Chatbot>}
-                >
+        <DynamicContextProvider
+            settings={{
+                environmentId: '6b6e3b91-f00e-4339-b1a4-a589ae64291b',
+            }}>
+            {adData && adData.character && <>
+                {!isMobile && <>
+                    <Popover
+                        arrow={false}
+                        overlayInnerStyle={{
+                            boxShadow: 'none',
+                            padding: 0,
+                            backgroundColor: 'transparent',
+                        }}
+                        placement='topLeft'
+                        trigger='click'
+                        content={<Chatbot character={adData.character}></Chatbot>}
+                    >
+                        {!adData.adMetaData && <>
+                            <div className={`${styles.hnftBadge} ${styles.default}`}>
+                                <div className={`${styles.iconContainer}`}>
+                                    <HeartIcon></HeartIcon>
+                                </div>
+                            </div>
+                        </>}
+                        {adData.adMetaData && <>
+                            <div className={`${styles.hnftBadge}`} style={{
+                                backgroundImage: `url(${adData.adMetaData.icon})`,
+                            }}></div>
+                        </>}
+                    </Popover>
+                </>}
+
+                {isMobile && <>
                     {!adData.adMetaData && <>
-                        <div className={`${styles.hnftBadge} ${styles.default}`}>
+                        <div className={`${styles.hnftBadge} ${styles.default}`} onClick={() => { setIsDrawerOpen(true) }}>
                             <div className={`${styles.iconContainer}`}>
                                 <HeartIcon></HeartIcon>
                             </div>
@@ -48,29 +70,14 @@ function HnftBadge({ hnftImageUrl, hnftContractAddress, hnftTokenId, darkMode = 
                     {adData.adMetaData && <>
                         <div className={`${styles.hnftBadge}`} style={{
                             backgroundImage: `url(${adData.adMetaData.icon})`,
-                        }}></div>
+                        }} onClick={() => { setIsDrawerOpen(true) }}></div>
                     </>}
-                </Popover>
-            </>}
-
-            {isMobile && <>
-                {!adData.adMetaData && <>
-                    <div className={`${styles.hnftBadge} ${styles.default}`} onClick={() => { setIsDrawerOpen(true) }}>
-                        <div className={`${styles.iconContainer}`}>
-                            <HeartIcon></HeartIcon>
-                        </div>
-                    </div>
+                    <MobileDrawer open={isDrawerOpen} onClose={() => { setIsDrawerOpen(false) }} darkMode={darkMode} >
+                        <Chatbot character={adData.character}></Chatbot>
+                    </MobileDrawer>
                 </>}
-                {adData.adMetaData && <>
-                    <div className={`${styles.hnftBadge}`} style={{
-                        backgroundImage: `url(${adData.adMetaData.icon})`,
-                    }} onClick={() => { setIsDrawerOpen(true) }}></div>
-                </>}
-                <MobileDrawer open={isDrawerOpen} onClose={() => { setIsDrawerOpen(false) }} darkMode={darkMode} >
-                    <Chatbot character={adData.character}></Chatbot>
-                </MobileDrawer>
             </>}
-        </>}
+        </DynamicContextProvider>
     </>;
 };
 
