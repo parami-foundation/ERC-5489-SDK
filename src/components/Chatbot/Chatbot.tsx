@@ -3,7 +3,7 @@ import styles from './Chatbot.module.scss';
 import { useRef } from 'react';
 import { Character } from '../../models/character';
 import { SoundFilled, CaretDownOutlined, ArrowRightOutlined } from '@ant-design/icons';
-import { useDynamicContext, useAuthenticateConnectedUser } from '@dynamic-labs/sdk-react';
+import { useDynamicContext } from '@dynamic-labs/sdk-react';
 
 export interface ChatbotProps {
     character: Character;
@@ -238,7 +238,7 @@ function Chatbot({ character }: ChatbotProps) {
                                     onKeyDown={(event) => {
                                         if (event.key === 'Enter') {
                                             event.preventDefault();
-                                            const msg = event.target.value;
+                                            const msg = (event.target as HTMLInputElement).value;
                                             setInputValue('');
                                             handleSendMessage(msg);
                                         }

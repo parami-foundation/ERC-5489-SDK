@@ -1,6 +1,6 @@
 {
   "name": "hyperlink-nft-badge",
-  "version": "0.1.17",
+  "version": "0.1.20",
   "description": "A simple SDK for enabling hyperlink of your NFT",
   "scripts": {
     "rollup": "rollup -c",
@@ -20,6 +20,7 @@
     "@mdx-js/react": "^1.6.22",
     "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-image": "^3.0.2",
+    "@rollup/plugin-json": "^6.0.0",
     "@rollup/plugin-node-resolve": "^13.0.6",
     "@rollup/plugin-typescript": "^8.3.0",
     "@storybook/addon-actions": "^6.5.9",

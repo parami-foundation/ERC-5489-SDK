@@ -41,7 +41,6 @@ function HnftBadge({ hnftImageUrl, hnftContractAddress, hnftTokenId, darkMode = 
                             backgroundColor: 'transparent',
                         }}
                         placement='topLeft'
-                        trigger='click'
                         content={<Chatbot character={adData.character}></Chatbot>}
                     >
                         {!adData.adMetaData && <>
